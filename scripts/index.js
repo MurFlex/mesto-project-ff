@@ -1,17 +1,21 @@
-const addCard = ({ link = '', name = '' }) => {
+const createCard = ({ link = '', name = '' }, deleteHandler) => {
 	const card = cardTemplate.cloneNode(true)
 
 	image = card.querySelector('.card__image')
 
 	image.src = link
 	image.alt = name
-	card.querySelector('.card__description').textContent = name
+	card.querySelector('.card__title').textContent = name
 
 	card
 		.querySelector('.card__delete-button')
-		.addEventListener('click', deleteCard)
+		.addEventListener('click', deleteHandler)
 
-	placesList.append(card)
+	return card
+}
+
+const addCard = (list, card) => {
+	list.append(card)
 }
 
 const deleteCard = e => {
@@ -28,6 +32,7 @@ const cardTemplate = document
 
 const placesList = document.querySelector('.places__list')
 
-if (cardTemplate && placesList) {
-	initialCards.forEach(card => addCard(card))
-}
+initialCards.forEach(card => {
+	const createdCard = createCard(card, deleteCard)
+	addCard(placesList, createdCard)
+})
