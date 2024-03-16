@@ -1,6 +1,6 @@
 import { addCard, createCard, deleteCard, likeCard } from './components/card.js'
 import { initialCards } from './components/cards.js'
-import { closeModal, handleEscape, openModal } from './components/modal.js'
+import { closeModal, openModal } from './components/modal.js'
 
 import './pages/index.css'
 
@@ -22,12 +22,16 @@ const profileName = document.querySelector('.profile__title')
 const profileDescription = document.querySelector('.profile__description')
 profileForm.addEventListener('submit', e => handleEditFormSubmit(e))
 
+const name = profileForm.querySelector('.popup__input_type_name')
+const description = profileForm.querySelector('.popup__input_type_description')
+
 const profileAddButton = document.querySelector('.profile__add-button')
 const newCardModal = document.querySelector('.popup_type_new-card')
 const newCardForm = newCardModal.querySelector('.popup__form')
 export const imageModal = document.querySelector('.popup_type_image')
+const image = imageModal.querySelector('.popup__image')
+const caption = imageModal.querySelector('.popup__caption')
 
-document.addEventListener('keydown', handleEscape)
 const popups = document.querySelectorAll('.popup')
 
 popups.forEach(popup => {
@@ -49,14 +53,6 @@ popups.forEach(popup => {
 })
 
 profileEditButton.addEventListener('click', () => {
-	const profileName = document.querySelector('.profile__title')
-	const profileDescription = document.querySelector('.profile__description')
-
-	const name = profileForm.querySelector('.popup__input_type_name')
-	const description = profileForm.querySelector(
-		'.popup__input_type_description'
-	)
-
 	name.value = profileName.textContent
 	description.value = profileDescription.textContent
 
@@ -65,9 +61,6 @@ profileEditButton.addEventListener('click', () => {
 
 function handleEditFormSubmit(e) {
 	e.preventDefault()
-
-	const name = e.target.querySelector('.popup__input_type_name')
-	const description = e.target.querySelector('.popup__input_type_description')
 
 	changeProfileData({
 		name: name.value,
@@ -81,10 +74,6 @@ const changeProfileData = ({ name, description }) => {
 	profileName.textContent = name
 	profileDescription.textContent = description
 }
-
-profileEditModal.addEventListener('click', e => {
-	closeModal(profileEditModal)
-})
 
 newCardForm.addEventListener('submit', handleAddCardSubmit)
 
@@ -104,13 +93,12 @@ function handleAddCardSubmit(e) {
 
 	addCard(placesList, createdCard)
 
+	newCardForm.reset()
+
 	closeModal(newCardModal)
 }
 
-export function openImage({ name, link }) {
-	const image = imageModal.querySelector('.popup__image')
-	const caption = imageModal.querySelector('.popup__caption')
-
+function openImage({ name, link }) {
 	image.src = link
 	image.alt = name
 	caption.textContent = name

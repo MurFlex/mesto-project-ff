@@ -1,14 +1,12 @@
-const cardTemplate = document
-	.querySelector('#card-template')
-	.content.querySelector('.places__item')
-
-const placesList = document.querySelector('.places__list')
-
 export const openModal = modalElement => {
+	document.addEventListener('keydown', handleEscape)
+
 	modalElement.classList.add('popup_is-opened')
 }
 
 export const closeModal = modalElement => {
+	document.removeEventListener('keydown', handleEscape)
+
 	modalElement.classList.remove('popup_is-opened')
 }
 
